@@ -1,0 +1,114 @@
+.carousel-inner img {
+    width: 100%; /* Remplit toute la largeur du conteneur */
+    height: 50vh; /* Fixe la hauteur à 50% de la hauteur de l'écran */
+    /*object-fit: cover; /* Recadre l'image pour qu'elle remplisse le conteneur sans déformation */
+}
+  
+hr {
+    margin: 0 auto !important;
+}
+
+#First {
+    background-image: url(images/ar2.jpg);
+    background-size: cover;
+}
+
+#imgg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fakeimg {
+    height: 200px;
+    background: #aaa;
+}
+
+#other {
+    color: #FFA07A;
+}
+
+/*footer {
+    background-color: #3f3f3f;
+    color: #d5d5d5;
+    padding-top: 2rem;
+}*/
+
+#dive {
+    border-top: 1px solid #faf7f7 !important;
+    margin-top: 60px !important;
+    margin-bottom: 70px !important;
+}
+
+hr.light {
+    border-top: 1px solid #d5d5d5;
+    width: 75%;
+    margin-top: .8rem;
+    margin-bottom: 1rem;
+}
+
+/*footer a {
+    color: #d5d5d5;
+}*/
+
+hr.light-100 {
+    border-top: 1px solid #d5d5d5;
+    width: 100%;
+    margin-top: .8rem;
+    margin-bottom: 1rem;
+}
+
+/* Styles de base pour le footer */
+footer {
+    background-color: #3f3f3f;
+    color: #d5d5d5;
+    padding-top: 1rem; /* Réduit le padding en haut */
+    padding-bottom: 0.4rem; /* Réduit le padding en bas */
+    height: 20%; /* Réduit la hauteur du footer à environ 20% de sa taille initiale */
+    display: flex; /* Utilisation de flexbox pour un meilleur alignement des éléments */
+    justify-content: center;
+    align-items: center;
+}
+
+footer .container-fluid {
+    padding: 0;
+}
+
+footer .row {
+    display: flex;
+    justify-content: space-around;
+    align-items: center; /* Aligne verticalement les éléments au centre */
+    width: 100%;
+}
+
+footer .col-md-6 {
+    text-align: center;
+    padding: 2px; /* Réduit les espaces autour des éléments */
+}
+
+footer img {
+    max-width: 60px; /* Réduit la largeur de l'image ENSEA pour un effet plus compact */
+    height: auto; /* Garde les proportions de l'image */
+    margin-bottom: 5px; /* Réduit la marge sous l'image */
+}
+
+footer p {
+    font-size: 10px; /* Réduit la taille du texte */
+    margin-bottom: 3px; /* Réduit la marge entre les paragraphes */
+}
+
+footer hr.light {
+    border-color: #d5d5d5; /* Couleur de la ligne horizontale */
+    width: 40%; /* Réduit la largeur de la ligne */
+    margin: 5px auto; /* Centre la ligne */
+}
+
+footer h5 {
+    font-size: 12px; /* Réduit la taille du titre */
+    margin-bottom: 5px; /* Réduit la marge sous le titre */
+}
+
+/* Assurer que le texte de l'email s'adapte bien */
+footer .col-md-6 p {
+    font-size: 10px; /* Réduit la taille du texte des emails */
+}

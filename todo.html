@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List - Users</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Micro Services App</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/todo.html">User Management</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- User List Table -->
+<div class="container mt-5">
+    <h2>Liste des Utilisateurs</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="user-list">
+            <!-- Users will be added here dynamically -->
+        </tbody>
+    </table>
+
+    <h3>Ajouter un utilisateur</h3>
+    <form id="add-user-form">
+        <div class="form-group">
+            <label for="nom">Nom</label>
+            <input type="text" class="form-control" id="lastName" required>
+        </div>
+        <div class="form-group">
+            <label for="prenom">Prénom</label>
+            <input type="text" class="form-control" id="firstName" required>
+        </div>
+        <button type="submit" class="btn btn-success">Ajouter</button>
+    </form>
+
+    <h3>Mettre à jour un utilisateur</h3>
+    <form id="update-user-form">
+        <div class="form-group">
+            <label for="update-id">ID de l'utilisateur</label>
+            <input type="number" class="form-control" id="update-id" required>
+        </div>
+        <div class="form-group">
+            <label for="update-nom">Nom</label>
+            <input type="text" class="form-control" id="update-nom" required>
+        </div>
+        <div class="form-group">
+            <label for="update-prenom">Prénom</label>
+            <input type="text" class="form-control" id="update-prenom" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Mettre à jour</button>
+    </form>
+
+    <h3>Supprimer un utilisateur</h3>
+    <form id="delete-user-form">
+        <div class="form-group">
+            <label for="delete-id">ID de l'utilisateur à supprimer</label>
+            <input type="number" class="form-control" id="delete-id" required>
+        </div>
+        <button type="submit" class="btn btn-danger">Supprimer</button>
+    </form>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom JS -->
+<script>
+// URL de votre API
+
+// Fonction pour récupérer et afficher la liste des utilisateurs
+// URL de votre API
+const apiUrl = 'http://localhost:3000/api/users';
+
+// Fonction pour récupérer et afficher la liste des utilisateurs
+function fetchUsers() {
+    fetch(apiUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const userList = document.getElementById('user-list');
+            userList.innerHTML = ''; // Clear previous list
+
+            if (data.length === 0) {
+                userList.innerHTML = '<tr><td colspan="4">Aucun utilisateur trouvé</td></tr>';
+            } else {
+                data.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${user.id}</td>
+                        <td>${user.firstName}</td>
+                        <td>${user.lastName}</td>
+                        <td>
+                            <button class="btn btn-info" onclick="viewUser(${user.id})">Voir</button>
+                            <button class="btn btn-warning" onclick="editUser(${user.id})">Éditer</button>
+                            <button class="btn btn-danger" onclick="deleteUser(${user.id})">Supprimer</button>
+                        </td>
+                    `;
+                    userList.appendChild(row);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching users:', error);
+            alert('Erreur de chargement des utilisateurs.');
+        });
+}
+
+/******************************************* bloc de plus ****************************************************/////
+
+
+// Fonction pour afficher les détails d'un utilisateur
+function viewUser(id) {
+    fetch(`${apiUrl}/${id}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erreur lors de la récupération des détails de l\'utilisateur');
+            }
+            return response.json();
+        })
+        .then(user => {
+            alert(`Détails de l'utilisateur :\n\nID: ${user.id}\nNom: ${user.lastName}\nPrénom: ${user.firstName}`);
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            alert('Impossible d\'afficher les détails de l\'utilisateur.');
+        });
+}
+
+// Fonction pour préremplir le formulaire de mise à jour
+function editUser(id) {
+    fetch(`${apiUrl}/${id}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erreur lors de la récupération des détails de l\'utilisateur pour édition');
+            }
+            return response.json();
+        })
+        .then(user => {
+            document.getElementById('update-id').value = user.id;
+            document.getElementById('update-nom').value = user.lastName;
+            document.getElementById('update-prenom').value = user.firstName;
+            alert('Formulaire prérempli avec les informations de l\'utilisateur.');
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            alert('Impossible de préremplir le formulaire.');
+        });
+}
+
+// Fonction pour supprimer un utilisateur
+function deleteUser(id) {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
+        return;
+    }
+
+    fetch(`${apiUrl}/${id}`, {
+        method: 'DELETE',
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erreur lors de la suppression de l\'utilisateur');
+            }
+            alert('Utilisateur supprimé avec succès.');
+            fetchUsers(); // Recharge la liste des utilisateurs
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            alert('Impossible de supprimer l\'utilisateur.');
+        });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/******************************************* bloc fonctionne ****************************************************/////
+
+// Ajouter un utilisateur
+document.getElementById('add-user-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const firstName = document.getElementById('firstName').value;
+        const lastName = document.getElementById('lastName').value;
+
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ firstName, lastName }),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erreur lors de l\'ajout de l\'utilisateur');
+                }
+                return response.json();
+            })
+            .then(() => {
+                alert('Utilisateur ajouté avec succès');
+                fetchUsers(); // Recharge la liste des utilisateurs
+                document.getElementById('add-user-form').reset();
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                alert('Erreur lors de l\'ajout de l\'utilisateur.');
+            });
+    });
+
+    // Mettre à jour un utilisateur
+    document.getElementById('update-user-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const id = document.getElementById('update-id').value;
+        const firstName = document.getElementById('update-prenom').value;
+        const lastName = document.getElementById('update-nom').value;
+
+        fetch(`${apiUrl}/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ firstName, lastName }),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erreur lors de la mise à jour de l\'utilisateur');
+                }
+                return response.json();
+            })
+            .then(() => {
+                alert('Utilisateur mis à jour avec succès');
+                fetchUsers(); // Recharge la liste des utilisateurs
+                document.getElementById('update-user-form').reset();
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                alert('Erreur lors de la mise à jour de l\'utilisateur.');
+            });
+    });
+
+    // Supprimer un utilisateur
+    document.getElementById('delete-user-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const id = document.getElementById('delete-id').value;
+
+        fetch(`${apiUrl}/${id}`, {
+            method: 'DELETE',
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erreur lors de la suppression de l\'utilisateur');
+                }
+                alert('Utilisateur supprimé avec succès');
+                fetchUsers(); // Recharge la liste des utilisateurs
+                document.getElementById('delete-user-form').reset();
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                alert('Erreur lors de la suppression de l\'utilisateur.');
+            });
+    });
+
+
+
+// Charger les utilisateurs lorsque la page se charge
+window.onload = fetchUsers;
+
+</script>
+
+</body>
+</html>

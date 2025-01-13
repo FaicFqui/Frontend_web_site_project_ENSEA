@@ -112,3 +112,22 @@ footer h5 {
 footer .col-md-6 p {
     font-size: 10px; /* Réduit la taille du texte des emails */
 }
+
+
+/***************** pour les cartes photos************/
+.card {
+    width: 18rem; /* Fixe la largeur de la carte */
+    margin: 15px; /* Ajoute de l'espace entre les cartes */
+  }
+  
+  .fixed-image {
+    height: 200px; /* Fixe la hauteur des images */
+    object-fit: cover; /* Remplit la zone sans déformer l'image */
+  }
+  
+  .d-flex.justify-content-center {
+    display: flex;
+    justify-content: center; /* Centre les cartes horizontalement */
+    flex-wrap: wrap; /* Permet d'aller à la ligne si nécessaire */
+  }
+  
